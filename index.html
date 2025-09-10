@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta name="baidu-site-verification" content="codeva-JcQZyWmUgF" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>现代生活指南 - 邪恶大鼠标版</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-green: #00ff66;
+            --neon-yellow: #ffcc00;
+            --dark-bg: #0a0a12;
+            --card-bg: rgba(20, 20, 35, 0.8);
+            --text-color: #e0e0ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 243, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 85% 30%, rgba(255, 0, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 80%, rgba(0, 255, 102, 0.1) 0%, transparent 20%);
+        }
+        
+        /* 粒子背景容器 */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            z-index: 1000;
+            background: rgba(10, 10, 18, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 18px;
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-blue);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--neon-blue);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        /* 英雄区域 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.7);
+            animation: textGlow 3s infinite alternate;
+        }
+        
+        .hero p {
+            font-size: 1.8rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+        }
+        
+        .scroll-down {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        .scroll-down i {
+            font-size: 2rem;
+            color: var(--neon-blue);
+        }
+        
+        /* 卡片区域 */
+        .cards-section {
+            padding: 100px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 60px;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+        }
+        
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            transition: transform 0.5s, box-shadow 0.5s;
+            perspective: 1000px;
+            height: 400px;
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink), var(--neon-green), var(--neon-yellow));
+            background-size: 400% 400%;
+            animation: gradientShift 3s ease infinite;
+            border-radius: 16px;
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            background: var(--card-bg);
+            border-radius: 15px;
+        }
+        
+        .card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px var(--neon-blue);
+            animation: float 3s infinite ease-in-out;
+        }
+        
+        .card-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        .card-content {
+            font-size: 1.2rem;
+        }
+        
+        .card-back .card-content {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            text-shadow: 0 0 10px var(--neon-pink);
+        }
+        
+        /* 品牌标签 */
+        .brand-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .brand-tag {
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid;
+            font-size: 0.9rem;
+        }
+        
+        .sam {
+            border-color: var(--neon-blue);
+            color: var(--neon-blue);
+        }
+        
+        .apple {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+        }
+        
+        .tesla {
+            border-color: var(--neon-pink);
+            color: var(--neon-pink);
+        }
+        
+        .toyota {
+            border-color: var(--neon-yellow);
+            color: var(--neon-yellow);
+        }
+        
+        /* 结论部分 */
+        .conclusion {
+            padding: 150px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .conclusion::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 0%, 
+                rgba(0, 243, 255, 0.1) 50%, 
+                transparent 100%);
+            animation: sweep 8s infinite linear;
+        }
+        
+        .conclusion h2 {
+            font-size: 4rem;
+            margin-bottom: 40px;
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.7);
+        }
+        
+        .conclusion p {
+            font-size: 2.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.6;
+            text-shadow: 0 0 15px var(--neon-pink);
+        }
+        
+        .android-text {
+            color: var(--neon-green);
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .android-text::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--neon-green);
+            animation: linePulse 2s infinite;
+        }
+        
+        /* 页脚 */
+        footer {
+            padding: 50px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .social-links a {
+            color: var(--text-color);
+            font-size: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--neon-blue);
+            transform: translateY(-5px);
+            text-shadow: 0 0 15px var(--neon-blue);
+        }
+        
+        .copyright {
+            font-size: 1.1rem;
+            opacity: 0.7;
+        }
+        
+        /* 动画关键帧 */
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
+            100% { text-shadow: 0 0 20px var(--neon-blue), 0 0 30px var(--neon-pink); }
+        }
+        
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 10px rgba(0, 243, 255, 0.7); }
+            50% { text-shadow: 0 0 20px var(--neon-pink), 0 0 30px var(--neon-blue); }
+            100% { text-shadow: 0 0 15px var(--neon-green), 0 0 25px var(--neon-pink); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+        
+        @keyframes linePulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes sweep {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .logo {
+                font-size: 22px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .nav-links a {
+                font-size: 16px;
+            }
+            
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.4rem;
+            }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+            
+            .conclusion h2 {
+                font-size: 3rem;
+            }
+            
+            .conclusion p {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .card {
+                height: 350px;
+            }
+            
+            .card-title {
+                font-size: 1.8rem;
+            }
+            
+            .card-content {
+                font-size: 1.1rem;
+            }
+            
+            .conclusion h2 {
+                font-size: 2.2rem;
+            }
+            
+            .conclusion p {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 粒子背景 -->
+    <div id="particles-js"></div>
+    
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">LIFESTYLE.GUIDE</div>
+        <div class="nav-links">
+            <a href="#home">首页</a>
+            <a href="#cards">生活指南</a>
+            <a href="#conclusion">结论</a>
+        </div>
+    </nav>
+    
+    <!-- 英雄区域 -->
+    <section class="hero" id="home">
+        <h1>现代生活指南</h1>
+        <p>选择正确的生活方式，定义你的身份与价值</p>
+        <div class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+    
+    <!-- 卡片区域 -->
+    <section class="cards-section" id="cards">
+        <h2 class="section-title">生活选择准则</h2>
+        <div class="cards-container">
+            <!-- 卡片 1 - 城市选择 -->
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <h3 class="card-title">城市选择</h3>
+                        <p class="card-content">没有山姆的城市，年轻人不要呆。</p>
+                        <div class="brand-tags">
+                            <span class="brand-tag sam">山姆会员店</span>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <p class="card-content">城市品质决定了生活品质，山姆会员店是衡量城市现代化程度的重要标志。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 卡片 2 - 饮食标准 -->
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3 class="card-title">饮食标准</h3>
+                        <p class="card-content">大部分人的年夜饭，不如麦当劳。</p>
+                        <div class="brand-tags">
+                            <span class="brand-tag" style="border-color: #FFCC00; color: #FFCC00;">麦当劳</span>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <p class="card-content">标准化、品质稳定的国际品牌远胜于传统家庭烹饪，效率与品质的完美结合。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 卡片 3 - 消费选择 -->
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3 class="card-title">消费选择</h3>
+                        <p class="card-content">超市就用山姆、手机就用苹果</p>
+                        <div class="brand-tags">
+                            <span class="brand-tag sam">山姆</span>
+                            <span class="brand-tag apple">苹果</span>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <p class="card-content">顶级品牌代表最高品质与身份象征，选择它们就是选择卓越的生活方式。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 卡片 4 - 出行标准 -->
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="card-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3 class="card-title">出行标准</h3>
+                        <p class="card-content">电车就开特斯拉、油车就开丰田</p>
+                        <div class="brand-tags">
+                            <span class="brand-tag tesla">特斯拉</span>
+                            <span class="brand-tag toyota">丰田</span>
+                        </div>
+                    </div>
+                    <div class="card-back">
+                        <p class="card-content">行业标杆产品定义了出行标准，选择它们意味着选择未来与可靠性。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- 结论部分 -->
+    <section class="conclusion" id="conclusion">
+        <h2>终极生活准则</h2>
+        <p>如果没有这些，就是典型的<span class="android-text">安卓人</span>，<span class="android-text">安卓思维</span>。</p>
+    </section>
+    
+    <!-- 页脚 -->
+    <footer>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-weibo"></i></a>
+            <a href="#"><i class="fab fa-weixin"></i></a>
+            <a href="#"><i class="fab fa-qq"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+        <p class="copyright">© 2025 现代生活指南 | 定义卓越生活方式</p>
+    </footer>
+
+    <!-- 引入粒子库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // 初始化粒子背景
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#00f3ff" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#00f3ff",
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    }
+                },
+                retina_detect: true
+            });
+            
+            // 滚动动画效果
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.style.opacity = '1';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            cards.forEach(card => {
+                card.style.transform = 'translateY(100px)';
+                card.style.opacity = '0';
+                card.style.transition = 'transform 0.8s ease, opacity 0.8s ease';
+                observer.observe(card);
+            });
+            
+            // 导航平滑滚动
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
